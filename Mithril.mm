@@ -46,6 +46,7 @@ static void Mithril_Init() {
 
         if (abc1 != 0) {
 
+Mithril_Patch<int>(abc1+std::stol(std::string("0x0002A8B68"), nullptr, 16), CFSwapInt32(0xC0035FD6));
 Mithril_Patch<int>(abc1+std::stol(std::string("0x101C84770"), nullptr, 16), CFSwapInt32(0xC0035FD6));
 Mithril_Patch<int>(abc1+std::stol(std::string("0x101C87200"), nullptr, 16), CFSwapInt32(0xC0035FD6));
 Mithril_Patch<int>(abc1+std::stol(std::string("0x101C85C80"), nullptr, 16), CFSwapInt32(0xC0035FD6));
