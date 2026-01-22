@@ -1,18 +1,27 @@
-# إعدادات المعمارية لعام 2026 (دعم آيفون XS وما فوق)
-ARCHS = arm64 arm64e
-TARGET = iphone:clang:latest:14.0
+# 1. إعدادات المعمارية (ARM64 للأجهزة الحديثة)
+ARCHS = arm64
+TARGET := iphone:clang:latest:14.0
 DEBUG = 0
 FINALPACKAGE = 1
 
+# 2. تحديد مسار Theos (تلقائي)
+THEOS ?= ~/theos
 include $(THEOS)/makefiles/common.mk
 
+# 3. اسم الأداة
 TWEAK_NAME = SovereignSecurity
 
-# [span_4](start_span)ربط ملفات المشروع: fishhook ومحتويات مجلد الحماية[span_4](end_span)
-SovereignSecurity_FILES = fishhook.c $(wildcard 防禁令/*.mm)
-# [span_5](start_span)إضافة الأطر البرمجية المطلوبة للواجهة والأمن[span_5](end_span)
-SovereignSecurity_FRAMEWORKS = UIKit CoreML Foundation Security QuartzCore
-# إعدادات التجميع لضمان استقرار الحقن
-SovereignSecurity_CFLAGS = -fobjc-arc -Wno-deprecated-declarations -Wno-unused-variable
+# 4. ملفات الكود (تأكد أن اسم ملفك هنا يطابق الملف الموجود في المجلد)
+# إذا كان اسم ملفك Mithril.mm فغير Tweak.mm إلى Mithril.mm
+SovereignSecurity_FILES = Tweak.mm
+
+# 5. مكتبات النظام المطلوبة
+SovereignSecurity_FRAMEWORKS = UIKit Foundation
+
+# 6. أعلام التجميع (Flags) - أهم جزء للسايدلود
+# -fobjc-arc: لإدارة الذاكرة تلقائياً
+# -Wl,-segalign,0x4000: يمنع الكراش في iOS 14+ عند الحقن الخارجي
+SovereignSecurity_CFLAGS = -fobjc-arc
+SovereignSecurity_LDFLAGS = -Wl,-segalign,0x4000
 
 include $(THEOS_MAKE_PATH)/tweak.mk
